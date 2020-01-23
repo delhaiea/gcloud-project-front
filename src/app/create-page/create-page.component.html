@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Ajouter un avis</mat-card-title>
+  </mat-card-header>
+  <form class="example-form" [formGroup]="commentsForm">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Nom d'utilisateur" formControlName="filmUser">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input type="text" placeholder="Titre du film" aria-label="Number" matInput formControlName="filmTitle"
+        [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let film of filmList" [value]="film.Title">
+          {{ film.Title }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <textarea matInput placeholder="Commentaire sur le film" formControlName="filmComment"></textarea>
+    </mat-form-field>
+
+    <mat-radio-group aria-label="Note" formControlName="filmStars">
+      <mat-radio-button value="1">1 étoile</mat-radio-button>
+      <mat-radio-button value="2">2 étoiles</mat-radio-button>
+      <mat-radio-button value="3">3 étoiles</mat-radio-button>
+      <mat-radio-button value="4">4 étoiles</mat-radio-button>
+      <mat-radio-button value="5">5 étoiles</mat-radio-button>
+    </mat-radio-group>
+    <button (click)="send()" mat-stroked-button color="primary">Ajouter</button>
+  </form>
+</mat-card>
