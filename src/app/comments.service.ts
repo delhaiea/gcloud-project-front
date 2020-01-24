@@ -26,16 +26,16 @@ export class CommentsService {
   constructor(private http: HttpClient) { }
 
   public async getAllComments(): Promise<Comment[]> {
-    return this.http.get('/api/comment/all').toPromise() as Promise<Comment[]>;
+    return this.http.get('http://' + process.env.API_POD_IP + '/api/comment/all').toPromise() as Promise<Comment[]>;
   }
 
   public async getComment(id: string): Promise<Comment> {
-    return this.http.get('/api/comment/', {
+    return this.http.get('http://' + process.env.API_POD_IP + '/api/comment/', {
       params: { id }
     }).toPromise() as Promise<Comment>;
   }
 
   public postComment(com: NoCommitedComment): Promise<any> {
-    return this.http.post('/api/comment', com).toPromise();
+    return this.http.post('http://' + process.env.API_POD_IP + '/api/comment', com).toPromise();
   }
 }

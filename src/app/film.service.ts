@@ -17,7 +17,7 @@ export class FilmService {
   constructor(private http: HttpClient) { }
 
   public async getFilmList(search: string): Promise<Film[]> {
-    return this.http.get('/api/film', {
+    return this.http.get('http://' + process.env.API_POD_IP + '/api/film', {
       params: {
         f: search
       }
@@ -25,7 +25,7 @@ export class FilmService {
   }
 
   public async getFilmById(id: string): Promise<Film> {
-    return this.http.get('/api/film/byId', {
+    return this.http.get('http://' + process.env.API_POD_IP + '/api/film/byId', {
       params: { id }
     }).toPromise() as Promise<Film>;
   }
