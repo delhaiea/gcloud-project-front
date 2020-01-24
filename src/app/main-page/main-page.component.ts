@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommentsService, Comment } from '../comments.service';
 
 @Component({
   selector: 'app-main-page',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  comments: Comment[];
 
-  ngOnInit() {
+  constructor(private commentsService: CommentsService) {
+    this.comments = [];
+    commentsService.getAllComments().then((docs) => {
+      this.comments = docs;
+    });
+  }
+
+  ngOnInit(): void {
   }
 
 }

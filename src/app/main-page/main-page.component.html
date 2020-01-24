@@ -1,1 +1,15 @@
-<button mat-raised-button color="primary">Commenter un film</button>
+<button mat-fab id="addbutton" color="primary" routerLink="/create">+</button>
+
+<div *ngFor='let c of comments'>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title> {{ c.filmTitle }} </mat-card-title>
+      <mat-card-subtitle>@{{ c.user }} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ c.content }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

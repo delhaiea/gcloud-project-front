@@ -35,7 +35,7 @@ export class CommentsService {
     }).toPromise() as Promise<Comment>;
   }
 
-  public postComment(com: NoCommitedComment): void {
-    this.http.post('/api/comment', com);
+  public postComment(com: NoCommitedComment): Promise<any> {
+    return this.http.post('/api/comment', com).toPromise();
   }
 }

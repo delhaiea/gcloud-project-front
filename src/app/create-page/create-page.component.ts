@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Film, FilmService } from '../film.service';
 import { NoCommitedComment, CommentsService } from '../comments.service';
 
@@ -23,7 +24,10 @@ export class CreatePageComponent implements OnInit {
 
   commentsForm: FormGroup;
 
-  constructor(private filmService: FilmService, private commentsService: CommentsService) {
+  constructor(
+    private filmService: FilmService,
+    private commentsService: CommentsService,
+    private router: Router) {
     this.filmTitle = '';
     this.filmComment = '';
     this.filmStars = '5';
@@ -40,13 +44,18 @@ export class CreatePageComponent implements OnInit {
     this.commentsForm.valueChanges.subscribe((value) => this.checkValidity);
     this.commentsForm.controls.filmTitle.valueChanges
       .subscribe((value: string) => {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-          if (value !== undefined && value.length >= 3) {
+        if (value !== undefined && value.length >= 3) {
+          this.filmTitle = value;
+          if (this.filmList) {
+            const filmSelected = this.filmList.filter((f) => f.Title === this.filmTitle);
+            this.selectedFilmItem = (filmSelected.length === 1) ? filmSelected[0] : undefined;
+          }
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
             this.filmService.getFilmList(value)
               .then((films: Film[]) => this.filmList = films);
-          }
-        }, 1200);
+          }, 1200);
+        }
       });
 
     this.commentsForm.controls.filmComment.valueChanges
@@ -58,28 +67,30 @@ export class CreatePageComponent implements OnInit {
   }
 
   send(): void {
-    this.checkValidity();
-    if (this.isValid) {
+    if (this.checkValidity()) {
+      const id = (this.selectedFilmItem) ? this.selectedFilmItem.imdbID : '';
       const datas: NoCommitedComment = {
         user: this.user,
         content: this.filmComment,
         stars: Number(this.filmStars),
         filmTitle: this.filmTitle,
-        idFilm: this.selectedFilmItem.imdbID
+        idFilm: id
       };
-      this.commentsService.postComment(datas);
+      this.commentsService.postComment(datas).then((o) => {
+        this.router.navigate(['/']);
+      });
     } else {
       alert('Le formulaire n\'est pas rempli correctement');
     }
 
   }
 
-  checkValidity(): void {
+  checkValidity(): boolean {
     this.isValid = (this.filmTitle !== '' &&
       this.filmComment !== '' &&
       this.filmStars !== '' &&
-      this.user !== '' &&
-      this.selectedFilmItem !== undefined);
+      this.user !== '');
+    return this.isValid;
   }
 
 }
