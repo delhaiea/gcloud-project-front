@@ -14,10 +14,12 @@ export interface Film {
 })
 export class FilmService {
 
+  API_POD_IP = '146.148.65.56';
+
   constructor(private http: HttpClient) { }
 
   public async getFilmList(search: string): Promise<Film[]> {
-    return this.http.get('http://' + process.env.API_POD_IP + '/api/film', {
+    return this.http.get('http://' + this.API_POD_IP  + '/api/film', {
       params: {
         f: search
       }
@@ -25,7 +27,7 @@ export class FilmService {
   }
 
   public async getFilmById(id: string): Promise<Film> {
-    return this.http.get('http://' + process.env.API_POD_IP + '/api/film/byId', {
+    return this.http.get('http://' + this.API_POD_IP  + '/api/film/byId', {
       params: { id }
     }).toPromise() as Promise<Film>;
   }
