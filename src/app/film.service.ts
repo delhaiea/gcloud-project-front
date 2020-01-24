@@ -14,7 +14,7 @@ export interface Film {
 })
 export class FilmService {
 
-  API_POD_IP = '146.148.65.56';
+  API_POD_IP = '35.223.178.138';
 
   constructor(private http: HttpClient) { }
 

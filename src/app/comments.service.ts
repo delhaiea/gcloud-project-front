@@ -24,7 +24,7 @@ export interface NoCommitedComment {
 })
 export class CommentsService {
 
-  API_POD_IP = '146.148.65.56';
+  API_POD_IP = '35.223.178.138';
 
   constructor(private http: HttpClient) { }
 
